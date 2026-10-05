@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { serviceCode } from "./service-error.js";
 export const error = (res: VercelResponse, status: number, message: string) =>
   res.status(status).json({ error: { message } });
 export function method(
@@ -22,8 +23,16 @@ export function safe(
     } catch (e) {
       if (e instanceof Error && e.name === "ZodError")
         return error(res, 400, "Requête invalide");
-      console.error("Erreur API");
-      return error(res, 500, "Une erreur interne est survenue");
+      const code = serviceCode(e);
+      console.error("Erreur API", { code });
+      return res
+        .status(500)
+        .json({
+          error: {
+            code,
+            message: `Le service est temporairement indisponible. Référence : ${code}.`,
+          },
+        });
     }
   };
 }

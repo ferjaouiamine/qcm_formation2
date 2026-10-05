@@ -2,6 +2,7 @@ import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import type { PGlite } from "@electric-sql/pglite";
+import { databaseConfig } from "./database-config.js";
 let local: Promise<PGlite> | undefined;
 async function localDb() {
   if (process.env.VERCEL)
@@ -20,9 +21,9 @@ export async function closeLocalDb() {
   }
 }
 export function db(): NeonQueryFunction<false, false> {
-  if (process.env.DATABASE_MODE !== "local") {
-    if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL manquante");
-    return neon(process.env.DATABASE_URL);
+  const config = databaseConfig();
+  if (config.mode !== "local") {
+    return neon(config.url);
   }
   const query = (text: string, params: unknown[] = []) => ({
     text,
