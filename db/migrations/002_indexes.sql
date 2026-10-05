@@ -1,0 +1,1 @@
+create index attempts_candidate_idx on attempts(candidate_id);create index attempts_status_submitted_idx on attempts(status,submitted_at desc);create index answers_question_idx on answers(question_id);create index candidates_agency_idx on candidates(agency);

@@ -1,0 +1,11 @@
+{
+  "title": "QCM — Formation assurance vie",
+  "durationMinutes": 30,
+  "passingRatio": 0.7,
+  "consolidationRatio": 0.5,
+  "source": "QCM_formation_assurance_vie.xlsx",
+  "sha256": "27b274a8fef4133963b5b5c07b80a2afd8a1b0575b6b678c75f368d4f6e81bec",
+  "notation": "Barème : 1 point par bonne réponse, 0 sinon (pas de point négatif). Seuils proposés : ACQUIS ≥ 70 %, À CONSOLIDER ≥ 50 %, sinon NON ACQUIS — à ajuster selon votre politique de formation. Source : support de formation Finasure « Présentation formation — assurance vie » (166 diapositives). Modules 1 « Le marché de l'assurance vie en Tunisie » et 6 « Les produits d'assurance sur le marché » volontairement exclus de l'évaluation.",
+  "count": 20,
+  "maxScore": 20
+}

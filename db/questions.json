@@ -1,0 +1,522 @@
+[
+  {
+    "position": 1,
+    "module": "2 · Cadre légal et réglementaire",
+    "text": "Le Code des assurances tunisien a été promulgué par :",
+    "options": [
+      {
+        "id": "a",
+        "label": "La loi n° 92-24 du 9 mars 1992"
+      },
+      {
+        "id": "b",
+        "label": "La loi n° 85-12 du 5 mars 1985"
+      },
+      {
+        "id": "c",
+        "label": "Le décret n° 2003-1098"
+      },
+      {
+        "id": "d",
+        "label": "Le règlement CGA 01/2016"
+      }
+    ],
+    "correct": "a",
+    "explanation": "Loi n° 92-24 du 9 mars 1992, parue au JORT n° 17 du 17 mars 1992, page 314.",
+    "points": 1
+  },
+  {
+    "position": 2,
+    "module": "2 · Cadre légal et réglementaire",
+    "text": "Quel est le délai maximal de renonciation au contrat d'assurance vie ?",
+    "options": [
+      {
+        "id": "a",
+        "label": "8 jours"
+      },
+      {
+        "id": "b",
+        "label": "15 jours"
+      },
+      {
+        "id": "c",
+        "label": "30 jours"
+      },
+      {
+        "id": "d",
+        "label": "2 mois"
+      }
+    ],
+    "correct": "b",
+    "explanation": "Le souscripteur peut renoncer dans un délai fixé par le contrat, sans que celui-ci dépasse 15 jours. Toute la prime est alors remboursée.",
+    "points": 1
+  },
+  {
+    "position": 3,
+    "module": "2 · Cadre légal et réglementaire",
+    "text": "Si une demande de rachat intervient pendant les 5 premières années du contrat, la pénalité de rachat appliquée par l'assureur :",
+    "options": [
+      {
+        "id": "a",
+        "label": "Est interdite"
+      },
+      {
+        "id": "b",
+        "label": "Ne doit pas dépasser 5 % du montant racheté"
+      },
+      {
+        "id": "c",
+        "label": "Ne doit pas dépasser 10 % du montant racheté"
+      },
+      {
+        "id": "d",
+        "label": "Est librement fixée par l'assureur"
+      }
+    ],
+    "correct": "b",
+    "explanation": "Pénalité plafonnée à 5 % du montant racheté. Pour les contrats en UC, aucune pénalité n'est appliquée quelle que soit l'ancienneté.",
+    "points": 1
+  },
+  {
+    "position": 4,
+    "module": "2 · Cadre légal et réglementaire",
+    "text": "Concernant l'avance sur contrat (règlement 1/2016 et son avenant), quelle affirmation est EXACTE ?",
+    "options": [
+      {
+        "id": "a",
+        "label": "Le taux d'intérêt ne doit pas dépasser TMM + 3 %"
+      },
+      {
+        "id": "b",
+        "label": "L'avance peut atteindre 100 % de l'épargne constituée"
+      },
+      {
+        "id": "c",
+        "label": "Le contrat doit avoir au moins 5 ans d'ancienneté"
+      },
+      {
+        "id": "d",
+        "label": "La période de remboursement peut être renouvelée sans limite"
+      }
+    ],
+    "correct": "a",
+    "explanation": "Taux plafonné à TMM + 3 %. L'avance ne peut dépasser 80 % de l'épargne constituée, le contrat doit avoir au moins 2 ans d'ancienneté et le remboursement ne peut dépasser 36 mois non renouvelables.",
+    "points": 1
+  },
+  {
+    "position": 5,
+    "module": "2 · Cadre légal et réglementaire",
+    "text": "Le transfert d'un contrat doit être exécuté dans un délai maximum de :",
+    "options": [
+      {
+        "id": "a",
+        "label": "1 mois pour un contrat individuel, 3 mois pour l'ensemble des adhésions à un contrat collectif"
+      },
+      {
+        "id": "b",
+        "label": "3 mois pour un contrat individuel, 1 mois pour l'ensemble des adhésions"
+      },
+      {
+        "id": "c",
+        "label": "1 mois dans tous les cas"
+      },
+      {
+        "id": "d",
+        "label": "3 mois dans tous les cas"
+      }
+    ],
+    "correct": "a",
+    "explanation": "1 mois pour un contrat individuel ou une adhésion à un contrat collectif ; 3 mois pour l'ensemble des adhésions à un contrat collectif.",
+    "points": 1
+  },
+  {
+    "position": 6,
+    "module": "3 · Caractéristiques du contrat",
+    "text": "En assurance vie, les sommes assurées sont :",
+    "options": [
+      {
+        "id": "a",
+        "label": "Plafonnées par la valeur du préjudice subi"
+      },
+      {
+        "id": "b",
+        "label": "Fixées librement par les parties au contrat"
+      },
+      {
+        "id": "c",
+        "label": "Fixées par le CGA"
+      },
+      {
+        "id": "d",
+        "label": "Limitées à 100 000 dinars"
+      }
+    ],
+    "correct": "b",
+    "explanation": "Article 34 CAT : « les sommes assurées sont fixées par les parties au contrat ». C'est le principe forfaitaire — aucune valeur de référence ne vient plafonner le capital garanti.",
+    "points": 1
+  },
+  {
+    "position": 7,
+    "module": "3 · Caractéristiques du contrat",
+    "text": "Après paiement de la somme assurée, l'assureur-vie peut-il se retourner contre le tiers responsable du sinistre ?",
+    "options": [
+      {
+        "id": "a",
+        "label": "Oui, au titre de la subrogation"
+      },
+      {
+        "id": "b",
+        "label": "Oui, mais seulement si le contrat le prévoit"
+      },
+      {
+        "id": "c",
+        "label": "Non, aucune subrogation n'est possible"
+      },
+      {
+        "id": "d",
+        "label": "Non, sauf en cas de faute intentionnelle du tiers"
+      }
+    ],
+    "correct": "c",
+    "explanation": "Article 35 CAT : dans les assurances de personnes, l'assureur ne peut être subrogé aux droits du contractant ou du bénéficiaire contre des tiers. Les bénéficiaires cumulent donc le capital ET l'indemnisation due par le responsable.",
+    "points": 1
+  },
+  {
+    "position": 8,
+    "module": "3 · Caractéristiques du contrat",
+    "text": "Le principe indemnitaire de l'article 16 CAT s'applique :",
+    "options": [
+      {
+        "id": "a",
+        "label": "À toutes les assurances"
+      },
+      {
+        "id": "b",
+        "label": "Aux seules assurances de personnes"
+      },
+      {
+        "id": "c",
+        "label": "Aux seuls contrats collectifs"
+      },
+      {
+        "id": "d",
+        "label": "Aux seules assurances de dommages"
+      }
+    ],
+    "correct": "d",
+    "explanation": "L'article 16 plafonne l'indemnité à la valeur de la chose assurée : il suppose un préjudice mesurable, ce qui n'existe pas en assurance de personnes. C'est le principe forfaitaire qui y prévaut.",
+    "points": 1
+  },
+  {
+    "position": 9,
+    "module": "3 · Caractéristiques du contrat",
+    "text": "En cas de suicide volontaire de l'assuré, l'assureur :",
+    "options": [
+      {
+        "id": "a",
+        "label": "Ne verse rien aux ayants droit"
+      },
+      {
+        "id": "b",
+        "label": "Verse l'intégralité du capital assuré"
+      },
+      {
+        "id": "c",
+        "label": "Verse une somme égale au montant de la provision mathématique"
+      },
+      {
+        "id": "d",
+        "label": "Verse 50 % du capital assuré"
+      }
+    ],
+    "correct": "c",
+    "explanation": "Article 37 CAT : l'assurance en cas de décès est sans effet en cas de suicide volontaire, mais l'assureur doit verser une somme égale à la provision mathématique. Le suicide inconscient donne lieu au versement intégral.",
+    "points": 1
+  },
+  {
+    "position": 10,
+    "module": "3 · Caractéristiques du contrat",
+    "text": "La faculté de rachat est obligatoire à la demande du contractant, SAUF pour :",
+    "options": [
+      {
+        "id": "a",
+        "label": "Les contrats vie entière"
+      },
+      {
+        "id": "b",
+        "label": "Les contrats mixtes"
+      },
+      {
+        "id": "c",
+        "label": "Les contrats de capitalisation"
+      },
+      {
+        "id": "d",
+        "label": "Les temporaires en cas de décès"
+      }
+    ],
+    "correct": "d",
+    "explanation": "Article 42 CAT : les assurances temporaires en cas de décès ne donnent lieu ni à la réduction du capital ni au rachat du contrat (pure prévoyance).",
+    "points": 1
+  },
+  {
+    "position": 11,
+    "module": "4 · Les contrats d'assurance vie",
+    "text": "Dans un contrat de capital différé SANS contre-assurance, que se passe-t-il si l'assuré décède avant la date d'expiration ?",
+    "options": [
+      {
+        "id": "a",
+        "label": "Le capital est versé au bénéficiaire désigné"
+      },
+      {
+        "id": "b",
+        "label": "Aucune prestation n'est versée"
+      },
+      {
+        "id": "c",
+        "label": "Les primes sont remboursées avec intérêts"
+      },
+      {
+        "id": "d",
+        "label": "La provision mathématique est versée"
+      }
+    ],
+    "correct": "b",
+    "explanation": "Sans contre-assurance, le décès avant l'expiration ne donne lieu à aucune prestation. Avec contre-assurance : remboursement des primes, des primes + intérêts techniques, ou règlement de la PM.",
+    "points": 1
+  },
+  {
+    "position": 12,
+    "module": "4 · Les contrats d'assurance vie",
+    "text": "Dans une assurance combinée 100.25, la garantie en cas de vie représente :",
+    "options": [
+      {
+        "id": "a",
+        "label": "25 % de la garantie décès"
+      },
+      {
+        "id": "b",
+        "label": "100 % de la garantie décès"
+      },
+      {
+        "id": "c",
+        "label": "50 % de la garantie décès"
+      },
+      {
+        "id": "d",
+        "label": "25 % des primes versées"
+      }
+    ],
+    "correct": "a",
+    "explanation": "La combinée 100.25 est une mixte à garanties inégales : la garantie vie est égale à 25 % de la garantie décès. C'est la combinaison la plus usitée.",
+    "points": 1
+  },
+  {
+    "position": 13,
+    "module": "4 · Les contrats d'assurance vie",
+    "text": "Quelle est la différence essentielle entre la terme fixe et la mixte proprement dite ?",
+    "options": [
+      {
+        "id": "a",
+        "label": "La terme fixe n'accepte que des primes uniques"
+      },
+      {
+        "id": "b",
+        "label": "La terme fixe ne garantit que le décès"
+      },
+      {
+        "id": "c",
+        "label": "La terme fixe ne prévoit aucune garantie en cas de vie"
+      },
+      {
+        "id": "d",
+        "label": "Le capital de la terme fixe est payé au terme du contrat, même en cas de décès antérieur"
+      }
+    ],
+    "correct": "d",
+    "explanation": "En terme fixe, le capital est payé au terme du contrat dans les deux cas. Les primes ne peuvent qu'être périodiques, avec cessation au décès, sinon le contrat perdrait son caractère aléatoire.",
+    "points": 1
+  },
+  {
+    "position": 14,
+    "module": "4 · Les contrats d'assurance vie",
+    "text": "La rente éducation est versée à l'orphelin :",
+    "options": [
+      {
+        "id": "a",
+        "label": "Jusqu'à l'âge de 18 ans en toutes circonstances"
+      },
+      {
+        "id": "b",
+        "label": "Jusqu'au décès du conjoint survivant"
+      },
+      {
+        "id": "c",
+        "label": "Pendant 10 ans après le décès de l'assuré"
+      },
+      {
+        "id": "d",
+        "label": "Jusqu'à la fin de ses études, au plus tard jusqu'à 21 ou 25 ans"
+      }
+    ],
+    "correct": "d",
+    "explanation": "Elle est versée jusqu'à ce que l'orphelin ait terminé ses études et au plus tard jusqu'à l'âge de 21 ans ou 25 ans.",
+    "points": 1
+  },
+  {
+    "position": 15,
+    "module": "4 · Les contrats d'assurance vie",
+    "text": "Dans une assurance en cas de vie souscrite sur DEUX têtes, le capital en cas de vie est versé :",
+    "options": [
+      {
+        "id": "a",
+        "label": "Si l'un des deux assurés est en vie au terme du contrat"
+      },
+      {
+        "id": "b",
+        "label": "Au premier décès"
+      },
+      {
+        "id": "c",
+        "label": "Seulement si les deux assurés sont en vie au terme"
+      },
+      {
+        "id": "d",
+        "label": "Au prorata de l'âge des deux assurés"
+      }
+    ],
+    "correct": "a",
+    "explanation": "En assurance en cas de vie sur deux têtes, le capital est versé si l'un des deux assurés est en vie au terme ; la rente est servie tant que l'un des deux assurés est en vie.",
+    "points": 1
+  },
+  {
+    "position": 16,
+    "module": "5 · La fiscalité de l'assurance vie",
+    "text": "Le plafond annuel de déduction des primes d'assurance vie du revenu imposable est de :",
+    "options": [
+      {
+        "id": "a",
+        "label": "10 000 dinars"
+      },
+      {
+        "id": "b",
+        "label": "50 000 dinars"
+      },
+      {
+        "id": "c",
+        "label": "100 000 dinars"
+      },
+      {
+        "id": "d",
+        "label": "Aucun plafond"
+      }
+    ],
+    "correct": "c",
+    "explanation": "Plafond de déduction : 100 000 D. par an. Un minimum d'impôt de 45 % reste par ailleurs dû.",
+    "points": 1
+  },
+  {
+    "position": 17,
+    "module": "5 · La fiscalité de l'assurance vie",
+    "text": "Le minimum d'impôt applicable malgré la déduction des primes est égal à :",
+    "options": [
+      {
+        "id": "a",
+        "label": "25 % de l'impôt dû sur le revenu global compte non tenu des déductions"
+      },
+      {
+        "id": "b",
+        "label": "45 % de l'impôt dû sur le revenu global compte non tenu des déductions"
+      },
+      {
+        "id": "c",
+        "label": "45 % du revenu net imposable"
+      },
+      {
+        "id": "d",
+        "label": "45 % de la prime d'assurance versée"
+      }
+    ],
+    "correct": "b",
+    "explanation": "Minimum d'impôt = 45 % de l'impôt dû sur le revenu global, compte non tenu des déductions. Exemple du support : 45 % × 28 750 = 12 937 D.",
+    "points": 1
+  },
+  {
+    "position": 18,
+    "module": "5 · La fiscalité de l'assurance vie",
+    "text": "Pour être déductibles, les primes doivent garantir un capital en cas de vie à l'assuré ou à ses descendants pour une durée minimale de :",
+    "options": [
+      {
+        "id": "a",
+        "label": "4 ans"
+      },
+      {
+        "id": "b",
+        "label": "5 ans"
+      },
+      {
+        "id": "c",
+        "label": "8 ans"
+      },
+      {
+        "id": "d",
+        "label": "10 ans"
+      }
+    ],
+    "correct": "c",
+    "explanation": "Condition de déductibilité : durée minimale de 8 ans (ou rente viagère avec jouissance différée d'au moins 8 ans).",
+    "points": 1
+  },
+  {
+    "position": 19,
+    "module": "5 · La fiscalité de l'assurance vie",
+    "text": "En cas de rachat pendant les 8 premières années du contrat :",
+    "options": [
+      {
+        "id": "a",
+        "label": "Les prestations restent exonérées sans condition"
+      },
+      {
+        "id": "b",
+        "label": "Une pénalité de 45 % est appliquée sur le capital"
+      },
+      {
+        "id": "c",
+        "label": "Le contrat est requalifié en contrat de capitalisation"
+      },
+      {
+        "id": "d",
+        "label": "Les réductions d'impôts doivent être restituées à l'administration fiscale"
+      }
+    ],
+    "correct": "d",
+    "explanation": "Toutes les prestations sont en principe exonérées de l'IRPP ; toutefois, en cas de rachat pendant les 8 premières années, les réductions d'impôts doivent être restituées à l'administration fiscale.",
+    "points": 1
+  },
+  {
+    "position": 20,
+    "module": "5 · La fiscalité de l'assurance vie",
+    "text": "Pour les contrats collectifs Épargne dont le terme correspond à l'âge de départ à la retraite, le minimum de prime à la charge de l'employé est de :",
+    "options": [
+      {
+        "id": "a",
+        "label": "1 %"
+      },
+      {
+        "id": "b",
+        "label": "5 %"
+      },
+      {
+        "id": "c",
+        "label": "10 %"
+      },
+      {
+        "id": "d",
+        "label": "20 %"
+      }
+    ],
+    "correct": "c",
+    "explanation": "10 % pour les contrats collectifs Épargne dont le terme correspond à l'âge de départ à la retraite ; 5 % pour les autres contrats collectifs Épargne ; 1 % pour les contrats collectifs de prévoyance.",
+    "points": 1
+  }
+]
