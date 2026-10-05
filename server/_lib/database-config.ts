@@ -11,7 +11,10 @@ function normalize(value: string | undefined) {
 }
 
 export function databaseConfig(env: NodeJS.ProcessEnv = process.env) {
-  const mode = normalize(env.DATABASE_MODE) || "neon";
+  const mode =
+    normalize(normalize(env.DATABASE_MODE).replace(/^DATABASE_MODE\s*=/i, ""))
+      .replace(/\s+#.*$/, "")
+      .toLowerCase() || "neon";
   if (mode !== "neon" && mode !== "local")
     throw new ServiceError("CONFIG_DATABASE_MODE_INVALID");
   if (mode === "local") {

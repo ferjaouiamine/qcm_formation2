@@ -16,6 +16,21 @@ describe("Configuration serveur et diagnostic sans secrets", () => {
     expect(
       databaseConfig({ DATABASE_MODE: ' "neon" ', DATABASE_URL: ` "${url}" ` }),
     ).toEqual({ mode: "neon", url }));
+  it.each([
+    "Neon",
+    "NEON",
+    "DATABASE_MODE=neon",
+    'DATABASE_MODE="neon"',
+    "neon # production",
+  ])("tolère un mode mal copié (%s)", (value) =>
+    expect(
+      databaseConfig({ DATABASE_MODE: value, DATABASE_URL: url }).mode,
+    ).toBe("neon"),
+  );
+  it("refuse un mode inconnu", () =>
+    expect(() =>
+      databaseConfig({ DATABASE_MODE: "postgres", DATABASE_URL: url }),
+    ).toThrow("CONFIG_DATABASE_MODE_INVALID"));
   it("refuse une URL absente avec une référence précise", () =>
     expect(() => databaseConfig({})).toThrow("CONFIG_DATABASE_URL_MISSING"));
   it.each(["la_chaine_Neon", `DATABASE_URL=${url}`, "https://example.com"])(
