@@ -21,6 +21,12 @@ export const getSession = (s: Session) =>
   call<RemoteSession>(`/api/attempts/${s.attemptId}/session`, {
     headers: tokenHeaders(s),
   });
+export const resetAttempt = (s: Session) =>
+  call<{ reset: boolean }>(`/api/attempts/${s.attemptId}/reset`, {
+    method: "POST",
+    headers: tokenHeaders(s),
+    body: "{}",
+  });
 export const saveAnswer = (
   s: Session,
   questionId: number,

@@ -112,7 +112,10 @@ export function Home() {
           <ul className="list-disc space-y-2 pl-5 leading-relaxed muted">
             <li>Une seule réponse par question. Aucun point négatif.</li>
             <li>Vous pouvez revenir sur vos réponses avant de terminer.</li>
-            <li>La minuterie continue si vous fermez ou rechargez la page.</li>
+            <li>
+              Restez sur cette page pendant toute l’évaluation : si vous la
+              quittez, le QCM recommence à la question 1.
+            </li>
             <li>
               Les réponses sont sauvegardées et le corrigé s’affiche à la fin.
             </li>
@@ -195,6 +198,12 @@ export function Home() {
                   onChange={(e) => setAgency(e.target.value)}
                 />
               </label>
+              <p className="alert mt-6" role="note">
+                <strong>Attention :</strong> ne quittez pas la page pendant
+                l’évaluation. Si vous changez d’onglet, de fenêtre ou
+                d’application, ou si vous rechargez la page, vos réponses sont
+                effacées et vous revenez à la question 1.
+              </p>
               <button
                 disabled={
                   busy ||

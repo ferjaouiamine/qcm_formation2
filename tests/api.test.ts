@@ -179,7 +179,51 @@ describe("API complète sur PostgreSQL embarqué", () => {
       undefined,
       a.token,
     );
+    const base = `/api/attempts/${a.attemptId}`,
+      first = s.quiz.questions[0].id;
+    expect(
+      (
+        await request(
+          base + "/answers",
+          "PATCH",
+          { questionId: first, selected: "a", revision: 5 },
+          a.token,
+        )
+      ).status,
+    ).toBe(200);
+    await db()`update attempts set expires_at=now()+interval '5 minutes' where id=${a.attemptId}`;
+    expect(
+      (await request(base + "/reset", "POST", {}, "incorrect")).status,
+    ).toBe(403);
+    expect(
+      (await request(base + "/reset", "POST", {}, a.token)).data.reset,
+    ).toBe(true);
+    const restarted = await request(
+      base + "/session",
+      "GET",
+      undefined,
+      a.token,
+    );
+    expect(restarted.data.answers.filter((x: any) => x.selected)).toHaveLength(
+      0,
+    );
+    expect(
+      new Date(restarted.data.expiresAt).getTime() - Date.now(),
+    ).toBeGreaterThan(29 * 60000);
+    expect(
+      (
+        await request(
+          base + "/answers",
+          "PATCH",
+          { questionId: first, selected: "a", revision: 6 },
+          a.token,
+        )
+      ).status,
+    ).toBe(409);
     await db()`update attempts set started_at=now()-interval '31 minutes',expires_at=now()-interval '1 minute' where id=${a.attemptId}`;
+    expect(
+      (await request(base + "/reset", "POST", {}, a.token)).data.reset,
+    ).toBe(false);
     expect(
       (
         await request(

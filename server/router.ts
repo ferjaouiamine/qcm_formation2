@@ -5,6 +5,7 @@ import answers from "./attempts/[id]/answers.js";
 import submit from "./attempts/[id]/submit.js";
 import result from "./attempts/[id]/result.js";
 import session from "./attempts/[id]/session.js";
+import reset from "./attempts/[id]/reset.js";
 import auth from "./auth/[action].js";
 import list from "./admin/attempts/index.js";
 import detail from "./admin/attempts/[id].js";
@@ -18,6 +19,7 @@ const routes = [
   [/^\/api\/attempts\/([^/]+)\/submit$/, submit, ["id"]],
   [/^\/api\/attempts\/([^/]+)\/result$/, result, ["id"]],
   [/^\/api\/attempts\/([^/]+)\/session$/, session, ["id"]],
+  [/^\/api\/attempts\/([^/]+)\/reset$/, reset, ["id"]],
   [/^\/api\/auth\/([^/]+)$/, auth, ["action"]],
   [/^\/api\/admin\/attempts$/, list, []],
   [/^\/api\/admin\/attempts\/([^/]+)$/, detail, ["id"]],

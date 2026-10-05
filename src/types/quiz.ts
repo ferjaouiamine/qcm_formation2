@@ -43,6 +43,7 @@ export type Session = {
   answers: Record<number, string>;
   pending: Record<number, { selected: string; revision: number }>;
   currentIndex: number;
+  away?: boolean;
 };
 export type RemoteSession = {
   status: string;

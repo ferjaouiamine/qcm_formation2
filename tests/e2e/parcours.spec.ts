@@ -18,6 +18,21 @@ test("parcours candidat, reprise, mode hors ligne, correction et administration"
   await page.getByLabel("Agence / entité").fill("Agence Démonstration");
   await page.getByRole("button", { name: "Commencer l’évaluation" }).click();
   await expect(page.getByRole("timer")).toContainText("29:");
+  await page.getByRole("radio").first().check();
+  await expect(
+    page.getByText("QUESTION 2 / 20", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Toutes les réponses sont sauvegardées"),
+  ).toBeVisible();
+  await page.reload();
+  await expect(page.getByText("le QCM a recommencé")).toBeVisible();
+  await expect(
+    page.getByText("QUESTION 1 / 20", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText("0 / 20 questions renseignées")).toBeVisible();
+  await expect(page.getByRole("radio", { checked: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "J’ai compris" }).click();
   for (let i = 0; i < 14; i++) {
     const q = questions[i];
     const label = q.options.find((o) => o.id === q.correct)!.label;
@@ -32,16 +47,6 @@ test("parcours candidat, reprise, mode hors ligne, correction et administration"
     await expect(
       page.getByText(`QUESTION ${i + 2} / 20`, { exact: true }),
     ).toBeVisible();
-    if (i === 2) {
-      await page.reload();
-      await expect(
-        page.getByText("QUESTION 4 / 20", { exact: true }),
-      ).toBeVisible();
-      await page.getByRole("button", { name: "Précédente" }).click();
-      await expect(page.getByRole("radio", { checked: true })).toBeChecked();
-      await expect(page.getByRole("timer")).toContainText("29:");
-      await page.getByRole("button", { name: "Suivante" }).click();
-    }
   }
   await context.setOffline(true);
   await page.getByRole("radio").nth(1).check();

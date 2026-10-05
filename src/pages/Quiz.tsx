@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getSession, saveAnswer, submit } from "../lib/api";
+import { getSession, resetAttempt, saveAnswer, submit } from "../lib/api";
 import {
   persistSession,
   readSession,
@@ -17,7 +17,8 @@ export function QuizPage() {
     [error, setError] = useState(""),
     [saving, setSaving] = useState(false),
     [busy, setBusy] = useState(false),
-    [expired, setExpired] = useState(false);
+    [expired, setExpired] = useState(false),
+    [restarted, setRestarted] = useState(false);
   const [offset, setOffset] = useState(0),
     [reload, setReload] = useState(0),
     [confirm, setConfirm] = useState(false);
@@ -39,9 +40,20 @@ export function QuizPage() {
   }, []);
   useEffect(() => {
     let active = true;
-    const s = sessionRef.current;
-    if (!s) return;
-    getSession(s)
+    const s0 = sessionRef.current;
+    if (!s0) return;
+    let s = s0;
+    (s0.away ? resetAttempt(s0) : Promise.resolve(null))
+      .then((r) => {
+        if (!active || !r) return;
+        s = { ...s0, away: false };
+        if (r.reset) {
+          s = { ...s, answers: {}, pending: {}, currentIndex: 0 };
+          setRestarted(true);
+        }
+        update(s);
+      })
+      .then(() => getSession(s))
       .then(async (remote) => {
         if (!active) return;
         if (remote.status === "submitted") {
@@ -139,6 +151,31 @@ export function QuizPage() {
     };
   }, [quiz, sync, offset]);
   useEffect(() => {
+    if (!quiz || expired) return;
+    const leave = () => {
+      const s = sessionRef.current;
+      if (s && !s.away && !finishing.current) update({ ...s, away: true });
+    };
+    const back = () => {
+      if (!sessionRef.current?.away) return;
+      cancelAdvance();
+      setConfirm(false);
+      setQuiz(null);
+      setReload((x) => x + 1);
+    };
+    const visibility = () => (document.hidden ? leave() : back());
+    document.addEventListener("visibilitychange", visibility);
+    window.addEventListener("pagehide", leave);
+    window.addEventListener("blur", leave);
+    window.addEventListener("focus", back);
+    return () => {
+      document.removeEventListener("visibilitychange", visibility);
+      window.removeEventListener("pagehide", leave);
+      window.removeEventListener("blur", leave);
+      window.removeEventListener("focus", back);
+    };
+  }, [quiz, expired, update, cancelAdvance]);
+  useEffect(() => {
     if (confirm) dialog.current?.showModal();
     else dialog.current?.close();
   }, [confirm]);
@@ -224,7 +261,10 @@ export function QuizPage() {
     update({
       ...s,
       answers: { ...s.answers, [q.id]: selected },
-      pending: { ...s.pending, [q.id]: { selected, revision: Date.now() } },
+      pending: {
+        ...s.pending,
+        [q.id]: { selected, revision: Math.round(Date.now() + offset) },
+      },
     });
     void sync().catch(() => {});
     if (index < quiz!.questions.length - 1) {
@@ -290,6 +330,18 @@ export function QuizPage() {
                 Réessayer
               </button>
             )}
+          </div>
+        )}
+        {restarted && (
+          <div role="alert" className="alert mb-5">
+            Vous avez quitté la page de l’évaluation : vos réponses ont été
+            effacées et le QCM a recommencé à la question 1.
+            <button
+              className="ml-2 font-semibold underline"
+              onClick={() => setRestarted(false)}
+            >
+              J’ai compris
+            </button>
           </div>
         )}
         {expired && (
