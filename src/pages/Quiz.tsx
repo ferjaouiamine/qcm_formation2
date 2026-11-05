@@ -57,20 +57,9 @@ export function QuizPage() {
       .then(async (remote) => {
         if (!active) return;
         if (remote.status === "submitted") {
-          const r = await submit(s);
-          if (!active) return;
-          const unsynced = Object.entries(s.pending).filter(
-            ([id, item]) =>
-              !remote.answers.some(
-                (a) =>
-                  a.question_id === Number(id) &&
-                  a.selected === item.selected &&
-                  a.revision >= item.revision,
-              ),
-          ).length;
-          localStorage.setItem(RESULT_KEY, JSON.stringify({ ...r, unsynced }));
+          localStorage.removeItem(RESULT_KEY);
           localStorage.removeItem(SESSION_KEY);
-          nav("/results", { replace: true });
+          nav("/merci", { replace: true });
           return;
         }
         const answers: Record<number, string> = {};
@@ -193,21 +182,14 @@ export function QuizPage() {
       try {
         if (!isExpired) await sync();
         else if (flight.current) await flight.current.catch(() => {});
-        const current = sessionRef.current!,
-          r = await submit(current);
-        localStorage.setItem(
-          RESULT_KEY,
-          JSON.stringify({
-            ...r,
-            unsynced: Object.keys(current.pending).length,
-          }),
-        );
+        await submit(sessionRef.current!);
+        localStorage.removeItem(RESULT_KEY);
         localStorage.removeItem(SESSION_KEY);
-        nav("/results", { replace: true });
+        nav("/merci", { replace: true });
       } catch (e) {
         setError(
           isExpired
-            ? "Le temps est écoulé. Reconnectez-vous puis réessayez de consulter votre résultat."
+            ? "Le temps est écoulé. Reconnectez-vous puis réessayez de terminer votre participation."
             : `La soumission n’a pas abouti. ${e instanceof Error ? e.message : ""}`,
         );
         setConfirm(false);

@@ -144,13 +144,10 @@ describe("API complète sur PostgreSQL embarqué", () => {
     );
     const result = await request(base + "/submit", "POST", {}, token);
     expect(result.status).toBe(200);
-    expect(result.data.score).toBe(14);
-    expect(result.data.level).toBe("acquis");
-    expect(result.data.passed).toBe(true);
-    expect(result.data.correction).toHaveLength(20);
-    expect(result.data.correction.map((q: any) => q.explanation)).toEqual(
-      questions.map((q) => q.explanation),
-    );
+    expect(result.data).toEqual({ submitted: true });
+    const [saved] =
+      await db()`select score::float,level,passed from attempts where id=${attemptId}`;
+    expect(saved).toMatchObject({ score: 14, level: "acquis", passed: true });
     expect(
       (
         await request(
@@ -165,8 +162,20 @@ describe("API complète sur PostgreSQL embarqué", () => {
       result.data,
     );
     expect(
-      (await request(base + "/result", "GET", undefined, token)).data.score,
-    ).toBe(14);
+      (await request(base + "/result", "GET", undefined, token)).status,
+    ).toBe(403);
+    const completedSession = await request(
+      base + "/session",
+      "GET",
+      undefined,
+      token,
+    );
+    expect(completedSession.data.status).toBe("submitted");
+    expect(JSON.stringify(completedSession.data)).not.toContain('"correct"');
+    expect(JSON.stringify(completedSession.data)).not.toContain(
+      '"explanation"',
+    );
+    expect(completedSession.data.score).toBeUndefined();
   });
   it("rejette les réponses hors délai et clôture les abandons", async () => {
     const { data: a } = await request("/api/attempts", "POST", {
@@ -250,8 +259,11 @@ describe("API complète sur PostgreSQL embarqué", () => {
       undefined,
       a.token,
     );
-    expect(result.data.score).toBe(0);
-    expect(result.data.duration_sec).toBe(1800);
+    expect(result.status).toBe(403);
+    const [saved] =
+      await db()`select score::float,duration_sec from attempts where id=${a.attemptId}`;
+    expect(saved.score).toBe(0);
+    expect(saved.duration_sec).toBe(1800);
   });
   it("connecte le formateur, produit les statistiques et exporte", async () => {
     expect(
@@ -306,6 +318,10 @@ describe("API complète sur PostgreSQL embarqué", () => {
       cookie,
     );
     expect(detail.data.answers).toHaveLength(20);
+    expect(Number(detail.data.score)).toBe(14);
+    expect(detail.data.answers.map((q: any) => q.explanation)).toEqual(
+      questions.map((q) => q.explanation),
+    );
     const csv = await request(
       "/api/admin/export",
       "GET",

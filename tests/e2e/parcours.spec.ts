@@ -70,18 +70,30 @@ test("parcours candidat, reprise, mode hors ligne, correction et administration"
     .getByRole("button", { name: "Terminer l’évaluation", exact: true })
     .click();
   await page.getByRole("button", { name: "Confirmer", exact: true }).click();
-  await expect(page).toHaveURL(/results/);
-  await expect(page.getByText("Acquis · 70 %")).toBeVisible();
-  await expect(page.locator("article")).toHaveCount(20);
-  await page.getByRole("button", { name: "Erreurs uniquement" }).click();
-  await expect(page.locator("article")).toHaveCount(6);
+  await expect(page).toHaveURL(/merci/);
+  await expect(
+    page.getByRole("heading", { name: "Merci pour votre participation" }),
+  ).toBeVisible();
+  await expect(page.locator("article")).toHaveCount(0);
+  await expect(page.getByText("Acquis · 70 %")).toHaveCount(0);
+  expect(
+    await page.evaluate(() => localStorage.getItem("assurance-vie-result")),
+  ).toBeNull();
   await page.reload();
-  await expect(page.getByText("Acquis · 70 %")).toBeVisible();
-  const download = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Télécharger le PDF" }).click();
-  const pdf = await download;
-  const path = await pdf.path();
-  expect(readFileSync(path!).subarray(0, 4).toString()).toBe("%PDF");
+  await expect(
+    page.getByRole("heading", { name: "Merci pour votre participation" }),
+  ).toBeVisible();
+  await page.evaluate(() =>
+    localStorage.setItem("assurance-vie-result", JSON.stringify({ score: 14 })),
+  );
+  await page.goto("/results");
+  await expect(page).toHaveURL(/merci/);
+  await expect(
+    page.getByRole("heading", { name: "Merci pour votre participation" }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(() => localStorage.getItem("assurance-vie-result")),
+  ).toBeNull();
   await page.goto("/admin");
   await page.getByLabel("Adresse e-mail").fill("e2e@example.test");
   await page.getByLabel("Mot de passe").fill("test-browser-password-123");
@@ -102,7 +114,9 @@ test("parcours candidat, reprise, mode hors ligne, correction et administration"
   ).toBeVisible();
   const ranking = page.waitForEvent("download");
   await page.getByRole("button", { name: "Exporter en PDF" }).click();
-  await ranking;
+  const pdf = await ranking;
+  const path = await pdf.path();
+  expect(readFileSync(path!).subarray(0, 4).toString()).toBe("%PDF");
   await page.getByRole("button", { name: "Se déconnecter" }).click();
   await expect(
     page.getByRole("button", { name: "Se connecter" }),

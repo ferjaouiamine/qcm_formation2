@@ -31,7 +31,7 @@ Le classeur original est conservé dans `source/QCM_formation_assurance_vie.xlsx
 - Barème du document : **Acquis ≥ 70 %** (14/20), **À consolider ≥ 50 %** (10/20), sinon **Non acquis**.
 - Les modules 1 et 6 sont exclus, comme dans le classeur.
 
-Les mentions destinées au formateur dans le document sont du contenu source. Le corrigé est présenté au candidat après soumission, conformément à la fonctionnalité demandée. Aucune vérification juridique ni modification des corrections n’est effectuée.
+Les mentions destinées au formateur dans le document sont du contenu source. Après soumission, le candidat voit uniquement « Merci pour votre participation ». Les notes et corrections sont réservées au dashboard administrateur et ne sont pas retournées par l’API candidat. Aucune vérification juridique ni modification des corrections n’est effectuée.
 
 ```powershell
 npm run import:questions
@@ -64,11 +64,11 @@ Documentation de référence : [fonctions Node.js Vercel](https://vercel.com/doc
 - Questions une par une : cocher une réponse enregistre le choix et affiche automatiquement la question suivante après 250 ms, même hors ligne. Navigation libre et retour arrière restent disponibles. La dernière question conserve la confirmation finale avant soumission.
 - La date limite est créée et contrôlée par le serveur. Recharger ou fermer la page ne redémarre pas les 30 minutes.
 - Chaque sélection est immédiatement conservée dans le navigateur, puis synchronisée avec PostgreSQL. Les erreurs réseau restent visibles ; une nouvelle tentative de synchronisation intervient au retour du réseau et toutes les 5 secondes.
-- Une soumission manuelle attend la sauvegarde. À expiration, seules les réponses reçues avant la limite sont notées. Les réponses locales non synchronisées sont signalées dans le résultat.
+- Une soumission manuelle attend la sauvegarde. À expiration, seules les réponses reçues avant la limite sont notées. La soumission manuelle, la clôture automatique et la reprise d’une tentative terminée conduisent toutes à la page de remerciement `/merci`.
 - La clôture est transactionnelle et idempotente. Les réponses ne peuvent plus être modifiées après clôture ni après la limite serveur.
 - Une tentative abandonnée est finalisée à la reprise ou lors de la consultation des données administrateur. Aucun cron n’est requis.
 - La reprise exige le même navigateur et son stockage local. Effacer ce stockage supprime le jeton candidat ; le résultat reste disponible au formateur.
-- Les PDF contiennent de véritables fichiers téléchargeables : correction complète, synthèse administrateur et classement. Le CSV exporte toutes les tentatives. Les moyennes et graphiques administrateur sont normalisés sur 20 et le classement utilise le pourcentage, pour comparer différentes versions.
+- Les PDF sont réservés à l’administrateur : correction complète, synthèse et classement. Le CSV exporte toutes les tentatives. Les moyennes et graphiques administrateur sont normalisés sur 20 et le classement utilise le pourcentage, pour comparer différentes versions. L’ancienne page `/results` redirige vers `/merci` et les résultats précédemment conservés dans le navigateur sont effacés lors de son affichage.
 
 ## Vérification
 

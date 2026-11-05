@@ -1,4 +1,4 @@
-import type { Quiz, Result, Session, RemoteSession } from "../types/quiz";
+import type { Quiz, Session, RemoteSession } from "../types/quiz";
 export async function call<T>(url: string, init?: RequestInit): Promise<T> {
   const r = await fetch(url, {
     credentials: "same-origin",
@@ -39,14 +39,10 @@ export const saveAnswer = (
     body: JSON.stringify({ questionId, selected, revision }),
   });
 export const submit = (s: Session) =>
-  call<Result>(`/api/attempts/${s.attemptId}/submit`, {
+  call<{ submitted: true }>(`/api/attempts/${s.attemptId}/submit`, {
     method: "POST",
     headers: tokenHeaders(s),
     body: "{}",
-  });
-export const getResult = (s: Session) =>
-  call<Result>(`/api/attempts/${s.attemptId}/result`, {
-    headers: tokenHeaders(s),
   });
 export const adminGet = <T>(url: string) => call<T>(url);
 export const adminLogin = (email: string, password: string) =>

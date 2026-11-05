@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { db } from "../../_lib/db.js";
-import { authorizedAttempt, result } from "../../_lib/attempt.js";
+import { authorizedAttempt } from "../../_lib/attempt.js";
 import { method, safe } from "../../_lib/http.js";
 export async function finalize(id: string) {
   const sql = db();
@@ -25,5 +25,5 @@ export default safe(async (req, res) => {
   const id = z.string().uuid().parse(req.query.id);
   if (!(await authorizedAttempt(req, res, id))) return;
   await finalize(id);
-  res.json(await result(id));
+  res.json({ submitted: true });
 });

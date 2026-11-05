@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
 import { Home } from "./pages/Home";
 import { QuizPage } from "./pages/Quiz";
-import { Results } from "./pages/Results";
+import { ThankYou } from "./pages/ThankYou";
 const Admin = lazy(() =>
   import("./admin/Admin").then((m) => ({ default: m.Admin })),
 );
@@ -26,7 +26,8 @@ createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/quiz" element={<QuizPage />} />
-            <Route path="/results" element={<Results />} />
+            <Route path="/merci" element={<ThankYou />} />
+            <Route path="/results" element={<Navigate to="/merci" replace />} />
             <Route path="/admin/*" element={<Admin />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

@@ -116,9 +116,7 @@ export function Home() {
               Restez sur cette page pendant toute l’évaluation : si vous la
               quittez, le QCM recommence à la question 1.
             </li>
-            <li>
-              Les réponses sont sauvegardées et le corrigé s’affiche à la fin.
-            </li>
+            <li>Les réponses sont sauvegardées et transmises au formateur.</li>
           </ul>
           <p className="mt-5 text-sm muted">
             Barème du document : acquis ≥ 70 % · à consolider ≥ 50 % · non
@@ -131,8 +129,8 @@ export function Home() {
             Identifiez-vous pour commencer
           </h2>
           <p className="mt-2 text-sm muted">
-            Ces informations apparaîtront sur votre résultat et dans le suivi du
-            formateur.
+            Ces informations permettront au formateur de suivre votre
+            participation.
           </p>
           {query.isLoading && (
             <p className="mt-5" role="status">
@@ -167,7 +165,7 @@ export function Home() {
                 className="btn primary mt-4 w-full"
                 onClick={() => nav("/quiz")}
               >
-                Reprendre / consulter le résultat →
+                Reprendre ma participation →
               </button>
             </div>
           ) : (
@@ -219,14 +217,6 @@ export function Home() {
                 Le chronomètre démarre lorsque vous commencez.
               </p>
             </>
-          )}
-          {localStorage.getItem(RESULT_KEY) && (
-            <Link
-              className="mt-5 block text-center font-semibold text-blue-800 underline"
-              to="/results"
-            >
-              Consulter mon dernier résultat
-            </Link>
           )}
         </form>
       </div>
