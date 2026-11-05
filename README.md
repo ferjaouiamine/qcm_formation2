@@ -16,6 +16,7 @@ Le script `setup:local` crée un `.env` local et initialise une base PostgreSQL 
 
 - Candidats : `http://localhost:5173/`
 - Administration : `http://localhost:5173/admin`, uniquement par accès direct à l’URL. Aucun lien administrateur n’est affiché dans l’espace candidat.
+- Dans « Candidats », le bouton « Supprimer » demande confirmation avant de supprimer définitivement la tentative et ses réponses. Les autres tentatives du candidat sont conservées ; les statistiques, le classement et les exports reflètent la suppression. Cette action est réservée au rôle administrateur.
 - Identifiants administrateur : `ADMIN_EMAIL` et `ADMIN_PASSWORD` dans le fichier local `.env`. Le mot de passe est généré aléatoirement, sans compte public prédéfini.
 
 Vite sert aussi l’API en développement. Les mêmes handlers et requêtes SQL sont utilisés avec Neon en production. Le mode local est refusé sur Vercel. Ne pas lancer deux processus simultanément sur la même base PGlite.

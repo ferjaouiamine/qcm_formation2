@@ -5,6 +5,7 @@ import handler from "../server/router";
 import { db, closeLocalDb } from "../server/_lib/db";
 import { seed } from "../db/seed";
 import questions from "../db/questions.json";
+import { signAdmin } from "../server/_lib/auth";
 process.env.DATABASE_MODE = "local";
 process.env.LOCAL_DATABASE_PATH = "memory://";
 process.env.JWT_SECRET =
@@ -334,6 +335,30 @@ describe("API complète sur PostgreSQL embarqué", () => {
     expect(
       (await request("/api/auth/logout", "POST", {}, undefined, cookie)).status,
     ).toBe(204);
+  });
+  it("supprime uniquement la tentative choisie avec autorisation administrateur", async () => {
+    const identity = { fullName: "Suppression Test", agency: "Agence suppression" };
+    const { data: first } = await request("/api/attempts", "POST", identity);
+    const { data: second } = await request("/api/attempts", "POST", identity);
+    const url = `/api/admin/attempts/${first.attemptId}`;
+    expect((await request(url, "DELETE", undefined, first.token)).status).toBe(401);
+    const viewer = `admin_token=${await signAdmin({ sub: "1", role: "viewer" })}`;
+    expect((await request(url, "DELETE", undefined, undefined, viewer)).status).toBe(403);
+    const cookie = `admin_token=${await signAdmin({ sub: "1", role: "admin" })}`;
+    const [before] = await db()`select count(*)::int count from answers where attempt_id=${first.attemptId}`;
+    expect(before.count).toBe(20);
+    expect((await request(url, "DELETE", undefined, undefined, cookie)).data).toEqual({ deleted: true });
+    const [answers] = await db()`select count(*)::int count from answers where attempt_id=${first.attemptId}`;
+    expect(answers.count).toBe(0);
+    expect((await request(url, "GET", undefined, undefined, cookie)).status).toBe(404);
+    expect((await request(url, "DELETE", undefined, undefined, cookie)).status).toBe(404);
+    const otherUrl = `/api/admin/attempts/${second.attemptId}`;
+    expect((await request(otherUrl, "GET", undefined, undefined, cookie)).status).toBe(200);
+    expect((await request(otherUrl, "DELETE", undefined, undefined, cookie)).status).toBe(200);
+    const remaining = await db()`select id from candidates where full_name=${identity.fullName}`;
+    expect(remaining).toHaveLength(0);
+    const listing = await request("/api/admin/attempts?search=Suppression", "GET", undefined, undefined, cookie);
+    expect(listing.data.total).toBe(0);
   });
   it("réimporte sans doublonner ni altérer les résultats", async () => {
     await seed();

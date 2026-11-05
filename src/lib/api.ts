@@ -45,6 +45,8 @@ export const submit = (s: Session) =>
     body: "{}",
   });
 export const adminGet = <T>(url: string) => call<T>(url);
+export const adminDeleteAttempt = (id: string) =>
+  call<{ deleted: true }>(`/api/admin/attempts/${id}`, { method: "DELETE" });
 export const adminLogin = (email: string, password: string) =>
   call("/api/auth/login", {
     method: "POST",

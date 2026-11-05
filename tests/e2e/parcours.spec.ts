@@ -117,6 +117,17 @@ test("parcours candidat, reprise, mode hors ligne, correction et administration"
   const pdf = await ranking;
   const path = await pdf.path();
   expect(readFileSync(path!).subarray(0, 4).toString()).toBe("%PDF");
+  await page.getByRole("button", { name: "Candidats", exact: true }).click();
+  const remove = page.getByRole("button", { name: "Supprimer la candidature de Candidat Navigateur", exact: true });
+  page.once("dialog", (dialog) => dialog.dismiss());
+  await remove.click();
+  await expect(remove).toBeVisible();
+  page.once("dialog", (dialog) => dialog.accept());
+  await remove.click();
+  await expect(page.getByRole("status")).toHaveText("La candidature a été supprimée.");
+  await expect(remove).toHaveCount(0);
+  await page.getByRole("button", { name: "Classement", exact: true }).click();
+  await expect(page.getByText("Candidat Navigateur", { exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Se déconnecter" }).click();
   await expect(
     page.getByRole("button", { name: "Se connecter" }),

@@ -12,7 +12,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { adminGet, adminLogin, adminLogout } from "../lib/api";
+import { adminGet, adminLogin, adminLogout, adminDeleteAttempt } from "../lib/api";
 
 type View = "overview" | "candidates" | "questions" | "agencies";
 type Stats = {
@@ -407,6 +407,27 @@ function Overview() {
 }
 
 function Candidates() {
+  const client = useQueryClient();
+  const [deleting, setDeleting] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState("");
+  const [notice, setNotice] = useState("");
+  async function removeAttempt(attempt: Attempt) {
+    if (deleting || !window.confirm(`Supprimer définitivement la candidature de ${attempt.full_name} (${attempt.agency}) ? Les réponses et le résultat de cette tentative seront supprimés. Cette action est irréversible.`)) return;
+    setDeleting(attempt.id);
+    setDeleteError("");
+    setNotice("");
+    try {
+      await adminDeleteAttempt(attempt.id);
+      client.removeQueries({ queryKey: ["attempt", attempt.id] });
+      if (query.data?.items.length === 1 && page > 1) setPage(page - 1);
+      await client.invalidateQueries();
+      setNotice("La candidature a été supprimée.");
+    } catch (error) {
+      setDeleteError(error instanceof Error ? error.message : "Suppression impossible. Réessayez.");
+    } finally {
+      setDeleting(null);
+    }
+  }
   const [page, setPage] = useState(1),
     [search, setSearch] = useState(""),
     [agency, setAgency] = useState(""),
@@ -486,6 +507,8 @@ function Candidates() {
           Exporter en CSV
         </a>
       </div>
+      {deleteError && <p role="alert" className="mb-4 rounded-lg bg-red-50 p-4 text-red-700">{deleteError}</p>}
+      {notice && <p role="status" className="mb-4 rounded-lg bg-teal-50 p-4 text-teal-800">{notice}</p>}
       {query.isLoading ? (
         <p>Chargement des candidats…</p>
       ) : query.error ? (
@@ -542,6 +565,14 @@ function Candidates() {
                         onClick={() => setSelected(a.id)}
                       >
                         Voir
+                      </button>
+                      <button
+                        className="btn ml-2 border border-red-200 bg-white text-red-700 disabled:opacity-50"
+                        aria-label={`Supprimer la candidature de ${a.full_name}`}
+                        disabled={deleting !== null}
+                        onClick={() => void removeAttempt(a)}
+                      >
+                        {deleting === a.id ? "Suppression…" : "Supprimer"}
                       </button>
                     </td>
                   </tr>
