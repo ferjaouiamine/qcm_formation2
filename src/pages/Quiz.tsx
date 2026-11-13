@@ -57,9 +57,11 @@ export function QuizPage() {
       .then(async (remote) => {
         if (!active) return;
         if (remote.status === "submitted") {
+          sessionStorage.removeItem("result-access");
+          if (remote.canViewResult) sessionStorage.setItem("result-access", JSON.stringify({ attemptId: s.attemptId, token: s.token }));
           localStorage.removeItem(RESULT_KEY);
           localStorage.removeItem(SESSION_KEY);
-          nav("/merci", { replace: true });
+          nav(remote.canViewResult ? "/results" : "/merci", { replace: true });
           return;
         }
         const answers: Record<number, string> = {};
@@ -182,10 +184,12 @@ export function QuizPage() {
       try {
         if (!isExpired) await sync();
         else if (flight.current) await flight.current.catch(() => {});
-        await submit(sessionRef.current!);
+        const receipt = await submit(sessionRef.current!);
+        sessionStorage.removeItem("result-access");
+        if (receipt.canViewResult) sessionStorage.setItem("result-access", JSON.stringify({ attemptId: sessionRef.current!.attemptId, token: sessionRef.current!.token }));
         localStorage.removeItem(RESULT_KEY);
         localStorage.removeItem(SESSION_KEY);
-        nav("/merci", { replace: true });
+        nav(receipt.canViewResult ? "/results" : "/merci", { replace: true });
       } catch (e) {
         setError(
           isExpired

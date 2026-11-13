@@ -39,7 +39,7 @@ export const saveAnswer = (
     body: JSON.stringify({ questionId, selected, revision }),
   });
 export const submit = (s: Session) =>
-  call<{ submitted: true }>(`/api/attempts/${s.attemptId}/submit`, {
+  call<{ submitted: true; canViewResult?: boolean }>(`/api/attempts/${s.attemptId}/submit`, {
     method: "POST",
     headers: tokenHeaders(s),
     body: "{}",

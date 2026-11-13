@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import questions from "../../db/questions.json" with { type: "json" };
+
 test("parcours candidat, reprise, mode hors ligne, correction et administration", async ({
   page,
   context,
@@ -181,4 +182,20 @@ test("affichage mobile sans débordement et navigation au clavier", async ({
   ).toBeVisible();
   await expect(page.getByRole("dialog")).not.toBeVisible();
   await expect(page).toHaveURL(/quiz/);
+});
+
+test("Habib chez Finasure consulte son corrigé après soumission et rechargement", async ({ page }) => {
+  await page.goto("/");
+  await page.getByLabel("Nom et prénom").fill("Habib");
+  await page.getByLabel("Agence / entité").fill("FINASURE");
+  await page.getByRole("button", { name: "Commencer l’évaluation" }).click();
+  await expect(page.getByRole("radio")).toHaveCount(4);
+  await page.getByRole("button", { name: "Terminer l’évaluation", exact: true }).click();
+  await page.getByRole("button", { name: "Confirmer", exact: true }).click();
+  await expect(page).toHaveURL(/results/);
+  await expect(page.getByRole("heading", { name: "Vos résultats" })).toBeVisible();
+  await expect(page.locator("article")).toHaveCount(20);
+  await expect(page.getByText("Justification :", { exact: true })).toHaveCount(20);
+  await page.reload();
+  await expect(page.locator("article")).toHaveCount(20);
 });

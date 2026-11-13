@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { db } from "../../_lib/db.js";
-import { authorizedAttempt } from "../../_lib/attempt.js";
+import { authorizedAttempt, canViewResult } from "../../_lib/attempt.js";
 import { method, safe } from "../../_lib/http.js";
 import { finalize } from "./submit.js";
 export default safe(async (req, res) => {
@@ -24,6 +24,7 @@ export default safe(async (req, res) => {
     await sql`select question_id,selected,revision::float from answers where attempt_id=${id}`;
   res.json({
     status: a.status,
+    ...(a.status === "submitted" && canViewResult(a) ? { canViewResult: true } : {}),
     expiresAt: a.expires_at,
     serverNow: new Date().toISOString(),
     quiz: { ...quiz, questions },

@@ -46,6 +46,7 @@ export type Session = {
   away?: boolean;
 };
 export type RemoteSession = {
+  canViewResult?: boolean;
   status: string;
   expiresAt: string;
   serverNow: string;

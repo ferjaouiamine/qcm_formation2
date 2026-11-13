@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { authorizedAttempt } from "../../_lib/attempt.js";
+import { authorizedAttempt, canViewResult, result } from "../../_lib/attempt.js";
 import { method, safe } from "../../_lib/http.js";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 export default safe(async (req: VercelRequest, res: VercelResponse) => {
@@ -11,6 +11,7 @@ export default safe(async (req: VercelRequest, res: VercelResponse) => {
     return res
       .status(409)
       .json({ error: { message: "Résultat non disponible" } });
+  if (canViewResult(a)) return res.json(await result(id));
   res
     .status(403)
     .json({ error: { message: "Les résultats sont réservés au formateur." } });

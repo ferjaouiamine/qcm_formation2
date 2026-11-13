@@ -32,7 +32,7 @@ Le classeur original est conservé dans `source/QCM_formation_assurance_vie.xlsx
 - Barème du document : **Acquis ≥ 70 %** (14/20), **À consolider ≥ 50 %** (10/20), sinon **Non acquis**.
 - Les modules 1 et 6 sont exclus, comme dans le classeur.
 
-Les mentions destinées au formateur dans le document sont du contenu source. Après soumission, le candidat voit uniquement « Merci pour votre participation ». Les notes et corrections sont réservées au dashboard administrateur et ne sont pas retournées par l’API candidat. Aucune vérification juridique ni modification des corrections n’est effectuée.
+Les mentions destinées au formateur dans le document sont du contenu source. Après soumission, les candidats voient « Merci pour votre participation », sauf le candidat nommé « habib » avec l’agence « finasure », qui peut consulter sa note, les questions, ses réponses et le corrigé. Cette exception est vérifiée côté serveur, sans distinction de casse et en ignorant les espaces aux extrémités. Elle repose sur les informations déclarées, pas sur une authentification de l’identité. L’administrateur conserve l’accès à tous les résultats. Aucune vérification juridique ni modification des corrections n’est effectuée.
 
 ```powershell
 npm run import:questions
@@ -69,7 +69,7 @@ Documentation de référence : [fonctions Node.js Vercel](https://vercel.com/doc
 - La clôture est transactionnelle et idempotente. Les réponses ne peuvent plus être modifiées après clôture ni après la limite serveur.
 - Une tentative abandonnée est finalisée à la reprise ou lors de la consultation des données administrateur. Aucun cron n’est requis.
 - La reprise exige le même navigateur et son stockage local. Effacer ce stockage supprime le jeton candidat ; le résultat reste disponible au formateur.
-- Les PDF sont réservés à l’administrateur : correction complète, synthèse et classement. Le CSV exporte toutes les tentatives. Les moyennes et graphiques administrateur sont normalisés sur 20 et le classement utilise le pourcentage, pour comparer différentes versions. L’ancienne page `/results` redirige vers `/merci` et les résultats précédemment conservés dans le navigateur sont effacés lors de son affichage.
+- Les PDF sont réservés à l’administrateur : correction complète, synthèse et classement. Le CSV exporte toutes les tentatives. Les moyennes et graphiques administrateur sont normalisés sur 20 et le classement utilise le pourcentage, pour comparer différentes versions. La page `/results` charge le corrigé depuis le serveur pour la tentative autorisée de Habib chez Finasure. Sans accès enregistré, elle redirige vers `/merci`. Aucun corrigé n’est conservé dans le stockage du navigateur.
 
 ## Vérification
 

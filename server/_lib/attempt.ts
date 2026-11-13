@@ -2,6 +2,9 @@ import { timingSafeEqual } from "node:crypto";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { attemptToken, hashToken } from "./auth.js";
 import { db } from "./db.js";
+export const canViewResult = (candidate: { full_name?: unknown; agency?: unknown }) =>
+  String(candidate.full_name ?? "").trim().toLowerCase() === "habib" &&
+  String(candidate.agency ?? "").trim().toLowerCase() === "finasure";
 export async function authorizedAttempt(
   req: VercelRequest,
   res: VercelResponse,

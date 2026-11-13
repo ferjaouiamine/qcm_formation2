@@ -6,6 +6,7 @@ import "./index.css";
 import { Home } from "./pages/Home";
 import { QuizPage } from "./pages/Quiz";
 import { ThankYou } from "./pages/ThankYou";
+import { Results } from "./pages/Results";
 const Admin = lazy(() =>
   import("./admin/Admin").then((m) => ({ default: m.Admin })),
 );
@@ -27,7 +28,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<Home />} />
             <Route path="/quiz" element={<QuizPage />} />
             <Route path="/merci" element={<ThankYou />} />
-            <Route path="/results" element={<Navigate to="/merci" replace />} />
+            <Route path="/results" element={<Results />} />
             <Route path="/admin/*" element={<Admin />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

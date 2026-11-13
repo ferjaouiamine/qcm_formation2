@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { db } from "../../_lib/db.js";
-import { authorizedAttempt } from "../../_lib/attempt.js";
+import { authorizedAttempt, canViewResult } from "../../_lib/attempt.js";
 import { method, safe } from "../../_lib/http.js";
 export async function finalize(id: string) {
   const sql = db();
@@ -23,7 +23,8 @@ export async function finalizeExpired() {
 export default safe(async (req, res) => {
   if (!method(req, res, ["POST"])) return;
   const id = z.string().uuid().parse(req.query.id);
-  if (!(await authorizedAttempt(req, res, id))) return;
+  const attempt = await authorizedAttempt(req, res, id);
+  if (!attempt) return;
   await finalize(id);
-  res.json({ submitted: true });
+  res.json({ submitted: true, ...(canViewResult(attempt) ? { canViewResult: true } : {}) });
 });

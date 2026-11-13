@@ -360,6 +360,25 @@ describe("API complète sur PostgreSQL embarqué", () => {
     const listing = await request("/api/admin/attempts?search=Suppression", "GET", undefined, undefined, cookie);
     expect(listing.data.total).toBe(0);
   });
+  it("réserve le corrigé candidat au couple habib et finasure après soumission", async () => {
+    for (const [fullName, agency, allowed] of [[" Habib ", " FINASURE ", true], ["habib", "autre", false], ["autre", "finasure", false]] as const) {
+      const { data: a } = await request("/api/attempts", "POST", { fullName, agency });
+      const base = `/api/attempts/${a.attemptId}`;
+      expect((await request(base + "/result", "GET", undefined, a.token)).status).toBe(409);
+      const receipt = await request(base + "/submit", "POST", {}, a.token);
+      expect(Boolean(receipt.data.canViewResult)).toBe(allowed);
+      const session = await request(base + "/session", "GET", undefined, a.token);
+      expect(Boolean(session.data.canViewResult)).toBe(allowed);
+      expect((await request(base + "/result", "GET", undefined, "wrong-token")).status).toBe(403);
+      const result = await request(base + "/result", "GET", undefined, a.token);
+      expect(result.status).toBe(allowed ? 200 : 403);
+      if (allowed) {
+        expect(result.data.correction).toHaveLength(20);
+        expect(result.data.correction.map((q: any) => q.explanation)).toEqual(questions.map(q => q.explanation));
+        expect(result.data.score).toBe(0);
+      } else expect(result.data.correction).toBeUndefined();
+    }
+  });
   it("réimporte sans doublonner ni altérer les résultats", async () => {
     await seed();
     const [row] = await db()`select count(*)::int count from questions`;
