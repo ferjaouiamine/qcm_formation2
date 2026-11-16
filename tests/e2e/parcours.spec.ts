@@ -184,6 +184,50 @@ test("affichage mobile sans débordement et navigation au clavier", async ({
   await expect(page).toHaveURL(/quiz/);
 });
 
+test("réessayer une ancienne tentative ouvre un formulaire vide pour un nouvel utilisateur", async ({ page }) => {
+  await page.goto("/");
+  const stale = {
+    attemptId: "11111111-1111-4111-8111-111111111111",
+    token: "ancien-token-invalide", fullName: "Nouvelle Tentative", agency: "Agence Test",
+    expiresAt: "2020-01-01T00:00:00.000Z", serverNow: "2020-01-01T00:00:00.000Z",
+    answers: { 1: "a" }, pending: { 1: { selected: "a", revision: 1 } }, currentIndex: 12, away: true,
+  };
+  await page.evaluate((saved) => {
+    localStorage.setItem("assurance-vie-session", JSON.stringify(saved));
+    sessionStorage.setItem("result-access", "ancien-acces");
+  }, stale);
+  await page.goto("/");
+  await page.route("**/api/attempts", route => route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ error: { message: "Service temporairement indisponible" } }) }));
+  await page.getByRole("button", { name: "Réessayer le QCM" }).click();
+  await expect(page).toHaveURL(/\/inscription$/);
+  await expect(page.getByLabel("Nom et prénom")).toHaveValue("");
+  await expect(page.getByLabel("Agence / entité")).toHaveValue("");
+  expect(await page.evaluate(() => localStorage.getItem("assurance-vie-session"))).toBeNull();
+  await page.reload();
+  await expect(page.getByLabel("Nom et prénom")).toHaveValue("");
+  await page.getByLabel("Nom et prénom").fill("Nouvel Utilisateur");
+  await page.getByLabel("Agence / entité").fill("Nouvelle Agence");
+  await page.getByRole("button", { name: "Commencer l’évaluation" }).click();
+  await expect(page.getByRole("alert")).toContainText("Service temporairement indisponible");
+  expect(await page.evaluate(() => localStorage.getItem("assurance-vie-session"))).toBeNull();
+  await page.unroute("**/api/attempts");
+  await page.getByRole("button", { name: "Commencer l’évaluation" }).click();
+  await expect(page).toHaveURL(/\/quiz$/);
+  await expect(page.getByText("QUESTION 1 / 20", { exact: true })).toBeVisible();
+  const fresh = await page.evaluate(() => JSON.parse(localStorage.getItem("assurance-vie-session")!));
+  expect(fresh.attemptId).not.toBe(stale.attemptId);
+  expect(fresh.token).not.toBe(stale.token);
+  expect(fresh.fullName).toBe("Nouvel Utilisateur");
+  expect(fresh.agency).toBe("Nouvelle Agence");
+  expect(fresh.answers).toEqual({});
+  expect(fresh.pending).toEqual({});
+  expect(new Date(fresh.expiresAt).getTime() - new Date(fresh.serverNow).getTime()).toBeGreaterThan(29 * 60000);
+  expect(await page.evaluate(() => sessionStorage.getItem("result-access"))).toBeNull();
+  await page.getByRole("radio").first().check();
+  await expect(page.getByText("QUESTION 2 / 20", { exact: true })).toBeVisible();
+  await expect(page.getByText("Toutes les réponses sont sauvegardées")).toBeVisible();
+});
+
 test("Habib chez Finasure consulte son corrigé après soumission et rechargement", async ({ page }) => {
   await page.goto("/");
   await page.getByLabel("Nom et prénom").fill("Habib");

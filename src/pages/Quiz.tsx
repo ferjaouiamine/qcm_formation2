@@ -226,12 +226,17 @@ export function QuizPage() {
             {error || "Reprise de votre évaluation…"}
           </p>
           {error && (
+            <>
             <button
               className="btn primary mt-5"
               onClick={() => setReload((x) => x + 1)}
             >
-              Réessayer
+              Réessayer le chargement
             </button>
+            <Link className="btn mt-3 inline-block border bg-white" to="/">
+              Refaire le QCM avec une nouvelle tentative
+            </Link>
+            </>
           )}
         </div>
       </main>

@@ -25,7 +25,8 @@ createRoot(document.getElementById("root")!).render(
           }
         >
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home key="home" />} />
+            <Route path="/inscription" element={<Home key="new-user" newUser />} />
             <Route path="/quiz" element={<QuizPage />} />
             <Route path="/merci" element={<ThankYou />} />
             <Route path="/results" element={<Results />} />

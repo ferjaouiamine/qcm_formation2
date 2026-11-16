@@ -2,33 +2,50 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createAttempt, getQuiz } from "../lib/api";
-import { persistSession, readSession, RESULT_KEY } from "../lib/storage";
-export function Home() {
+import { persistSession, readSession, RESULT_KEY, SESSION_KEY } from "../lib/storage";
+export function Home({ newUser = false }: { newUser?: boolean }) {
   const nav = useNavigate(),
     query = useQuery({ queryKey: ["quiz"], queryFn: getQuiz });
   const [name, setName] = useState(""),
     [agency, setAgency] = useState(""),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
-  const saved = readSession(),
+  const saved = newUser ? null : readSession(),
     data = query.data;
+  function retryAsNewUser() {
+    try {
+      localStorage.removeItem(SESSION_KEY);
+      localStorage.removeItem(RESULT_KEY);
+      sessionStorage.removeItem("result-access");
+      sessionStorage.removeItem("qcm-result");
+      nav("/inscription");
+    } catch {
+      setError("Impossible de réinitialiser la participation dans ce navigateur.");
+    }
+  }
   async function start(e: React.FormEvent) {
     e.preventDefault();
+    await begin(name, agency);
+  }
+  async function begin(fullName: string, candidateAgency: string) {
+    if (busy) return;
     setBusy(true);
     setError("");
     try {
       localStorage.setItem("storage-check", "1");
       localStorage.removeItem("storage-check");
-      const a = await createAttempt(name.trim(), agency.trim());
+      const a = await createAttempt(fullName.trim(), candidateAgency.trim());
       persistSession({
         ...a,
-        fullName: name.trim(),
-        agency: agency.trim(),
+        fullName: fullName.trim(),
+        agency: candidateAgency.trim(),
         answers: {},
         pending: {},
         currentIndex: 0,
       });
       localStorage.removeItem(RESULT_KEY);
+      sessionStorage.removeItem("result-access");
+      sessionStorage.removeItem("qcm-result");
       nav("/quiz");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Impossible de commencer.");
@@ -163,10 +180,22 @@ export function Home() {
               <button
                 type="button"
                 className="btn primary mt-4 w-full"
+                disabled={busy}
                 onClick={() => nav("/quiz")}
               >
                 Reprendre ma participation →
               </button>
+              <button
+                type="button"
+                className="btn mt-3 w-full border border-cyan-700 bg-white text-cyan-800"
+                disabled={busy}
+                onClick={retryAsNewUser}
+              >
+                {busy ? "Préparation…" : "Réessayer le QCM →"}
+              </button>
+              <p className="mt-3 text-sm muted">
+                Réessayer ouvre un formulaire vide pour un nouvel utilisateur. Saisissez son nom et son agence avant de commencer.
+              </p>
             </div>
           ) : (
             <>
